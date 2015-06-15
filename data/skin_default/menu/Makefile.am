@@ -1,4 +1,3 @@
 installdir = $(pkgdatadir)/skin_default/menu
 
-dist_install_DATA = \
-	*.png
+dist_install_DATA = *.png
