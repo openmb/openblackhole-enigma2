@@ -13,4 +13,5 @@ dist_install_DATA = \
 	LiberationSans-Bold.ttf \
 	LiberationSans-BoldItalic.ttf \
 	LiberationSans-Italic.ttf \
-	LiberationSans-Regular.ttf
+	LiberationSans-Regular.ttf \
+	tiny.ttf
