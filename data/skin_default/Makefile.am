@@ -127,8 +127,6 @@ progressoverlay.png \
 progress.png \
 progress_small.png \
 radio_p_bar.png \
-rcold.png \
-rc.png \
 rec_1.png \
 rec2.png \
 recbg2.png \
