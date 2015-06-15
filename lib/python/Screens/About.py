@@ -24,7 +24,21 @@ class About(Screen):
 		Screen.__init__(self, session)
 		hddsplit, = skin.parameters.get("AboutHddSplit", (0,))
 
-		AboutText = _("Hardware: ") + about.getHardwareTypeString() + "\n"
+		hwname = ""
+		if about.getHardwareTypeString() == "INI-8000SV":
+		    hwname = "MB Premium Ultra HD"
+		    AboutText = _("Hardware: ") + hwname + "\n"
+		elif about.getHardwareTypeString() == "INI-5000SV":
+		    hwname = "MB Premium Twin HD"
+		    AboutText = _("Hardware: ") + hwname + "\n"
+		elif about.getHardwareTypeString() == "INI-2000SV":
+		    hwname = "MB Premium Mini+ PLUS  HD"
+		    AboutText = _("Hardware: ") + hwname + "\n"
+		elif about.getHardwareTypeString() == "INI-1000SV":
+		    hwname = "MB Premium Mini HD"
+		    AboutText = _("Hardware: ") + hwname + "\n"
+		else:
+		    AboutText = _("Hardware: ") + about.getHardwareTypeString() + "\n"
 		AboutText += _("CPU: ") + about.getCPUInfoString() + "\n"
 		AboutText += _("Image: ") + about.getImageTypeString() + "\n"
 		AboutText += _("Installed: ") + about.getFlashDateString() + "\n"
@@ -43,10 +57,7 @@ class About(Screen):
 		self["ImageVersion"] = StaticText(ImageVersion)
 		AboutText += ImageVersion + "\n"
 
-		if fileExists("/proc/stb/info/vumodel"):
-			AboutText += _("DVB drivers: ") + about.getDriverVuInstalledDate() + "\n"
-		else:
-			AboutText += _("DVB drivers: ") + about.getDriverInstalledDate() + "\n"
+		AboutText += _("DVB drivers: ") + about.getDriverInstalledDate() + "\n"
 
 		AboutText += _("Python version: ") + about.getPythonVersionString() + "\n"
 

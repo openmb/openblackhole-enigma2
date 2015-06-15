@@ -265,10 +265,19 @@ class BhsysInfo(Screen):
 		
 	def updateInfo(self):
 		rc = system("df -h > /tmp/syinfo.tmp")
-		text = _("BOX\n") + _("Brand:") + "\tVuplus\n"
-		f = open("/proc/stb/info/vumodel",'r')
- 		text += _("Model:\t") + f.readline()
- 		f.close()
+		text = _("BOX\n") + _("Brand:") + "\tMiraclebox\n"
+	
+		hwname = "Unknown"
+		if about.getHardwareTypeString() == "INI-8000SV":
+		    hwname = "MB Premium Ultra HD"
+		elif about.getHardwareTypeString() == "INI-5000SV":
+		    hwname = "MB Premium Twin HD"
+		elif about.getHardwareTypeString() == "INI-2000SV":
+		    hwname = "MB Premium Mini+ PLUS HD"
+		elif about.getHardwareTypeString() == "INI-1000SV":
+		    hwname = "MB Premium Mini HD"
+
+ 		text += _("Model:\t") + hwname
 		f = open("/proc/stb/info/chipset",'r')
  		text += _("Chipset:\t") + f.readline() +"\n"
  		f.close()
