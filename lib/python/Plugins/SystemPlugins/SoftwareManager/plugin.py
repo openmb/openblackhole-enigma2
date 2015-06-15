@@ -1597,6 +1597,7 @@ class PacketManager(Screen, NumericalTextInput):
 		self.onShown.append(self.setWindowTitle)
 		self.onLayoutFinish.append(self.rebuildList)
 
+		rcinput = eRCInput.getInstance()
 		try:
 			vumachine = file("/proc/stb/info/vumodel").read().strip()
 			if vumachine == "ultimo" or vumachine == "zero":

@@ -3,6 +3,7 @@ SUBDIRS = menu icons buttons spinner LCDIcons
 installdir = $(pkgdatadir)/skin_default
 
 dist_install_DATA = \
+rc.png rcold.png \
 arrowdown.png \
 arrowleft.png \
 arrowright.png \
