@@ -28,7 +28,6 @@ bs_r.png \
 bs_tl.png \
 bs_t.png \
 bs_tr.png \
-buttons
 camera.png \
 chan_p_bar.png \
 connection_1.png \
