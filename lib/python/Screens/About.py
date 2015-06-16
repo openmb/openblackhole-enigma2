@@ -25,16 +25,16 @@ class About(Screen):
 		hddsplit, = skin.parameters.get("AboutHddSplit", (0,))
 
 		hwname = ""
-		if about.getHardwareTypeString() == "INI-8000SV":
+		if about.getHardwareTypeString() == "ini-8000sv":
 		    hwname = "MB Premium Ultra HD"
 		    AboutText = _("Hardware: ") + hwname + "\n"
-		elif about.getHardwareTypeString() == "INI-5000SV":
+		elif about.getHardwareTypeString() == "ini-5000sv":
 		    hwname = "MB Premium Twin HD"
 		    AboutText = _("Hardware: ") + hwname + "\n"
-		elif about.getHardwareTypeString() == "INI-2000SV":
+		elif about.getHardwareTypeString() == "ini-2000sv":
 		    hwname = "MB Premium Mini+ PLUS  HD"
 		    AboutText = _("Hardware: ") + hwname + "\n"
-		elif about.getHardwareTypeString() == "INI-1000SV":
+		elif about.getHardwareTypeString() == "ini-1000sv":
 		    hwname = "MB Premium Mini HD"
 		    AboutText = _("Hardware: ") + hwname + "\n"
 		else:

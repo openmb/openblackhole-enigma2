@@ -18,7 +18,8 @@ class HardwareInfo:
 		print "[HardwareInfo] Scanning hardware info"
 		# Version
 		try:
-			self.device_version = open("/proc/stb/info/version").read().strip()
+			pass
+			#self.device_version = open("/proc/stb/info/version").read().strip()
 		except:
 			pass
 

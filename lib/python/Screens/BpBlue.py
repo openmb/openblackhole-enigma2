@@ -1,6 +1,7 @@
 from Screens.Screen import Screen
 from Screens.MessageBox import MessageBox
 from Components.ActionMap import ActionMap
+from Components.Button import Button
 from Components.Label import Label
 from Components.ScrollLabel import ScrollLabel
 from Components.MenuList import MenuList
@@ -13,6 +14,10 @@ from os import system, listdir, remove as os_remove
 from enigma import iServiceInformation, eTimer
 import socket
 
+from xml.dom import Node
+from xml.dom import minidom
+from Screens.Console import Console
+import urllib
 
 class DeliteBluePanel(Screen):
 	skin = """
@@ -47,6 +52,7 @@ class DeliteBluePanel(Screen):
 		self["Ilab3"] = Label()
 		self["Ilab4"] = Label()
 		self["key_red"] = Label(_("Epg Panel"))
+		self["key_green"] = Label(_("Download CAM"))
 		self["key_yellow"] = Label(_("Sys Info"))
 		self["key_blue"] = Label(_("Extra Settings"))
 		self["activecam"] = Label()
@@ -71,6 +77,14 @@ class DeliteBluePanel(Screen):
 		self.populate_List()
 		self["list"] = MenuList(self.emlist)
 		self["lab1"].setText(_("%d  CAMs Installed") % (len(self.emlist)))
+		
+		self.timer = eTimer()
+		self.timer.callback.append(self.downloadxmlpage)
+		self.timer.start(100, 1)
+		self.addon = 'emu'
+		self.icount = 0
+		self.downloading = False
+        
 		self.onShow.append(self.updateBP)
 
 	def populate_List(self):
@@ -184,8 +198,43 @@ class DeliteBluePanel(Screen):
 		from Screens.BpSet import DeliteSettings
 		self.session.open(DeliteSettings)
 		
+	
+	def downloadxmlpage(self):
+		from twisted.web.client import getPage
+		url = 'http://vuplus-images.co.uk/panel/addonslist.xml'
+		getPage(url).addCallback(self._gotPageLoad).addErrback(self.errorLoad)
+
+	def errorLoad(self, error):
+		print str(error)
+
+	def _gotPageLoad(self, data):
+		self.xml = data
+		try:
+			if self.xml:
+				xmlstr = minidom.parseString(self.xml)
+				self.data = []
+				self.names = []
+				icount = 0
+				list = []
+				xmlparse = xmlstr
+				self.xmlparse = xmlstr
+				for plugins in xmlstr.getElementsByTagName('plugins'):
+					self.names.append(plugins.getAttribute('cont').encode('utf8'))
+
+				self.list = list
+				self.downloading = True
+			else:
+				self.downloading = False
+				return
+		except:
+			self.downloading = False
+
 	def keyGreen(self):
-		self.session.open(MessageBox, _("Sorry, function not available"), MessageBox.TYPE_INFO)
+		if self.downloading == True:
+			try:
+				self.session.openWithCallback(self.populate_List, IpkgPackages, self.xmlparse, " Cams - BlackHole 2.x.x ")
+			except:
+				self.close()
 		
 	def keyRed(self):
 		from Plugins.SystemPlugins.CrossEPG.crossepg_main import crossepg_main
@@ -193,8 +242,56 @@ class DeliteBluePanel(Screen):
 
 	def myclose(self):
 		self.close()
-	
 
+class IpkgPackages(Screen):
+	skin = '\n\t<screen position="center,center" size="900,720" title="Download BLACKHOLE SOFTCAMS" >\n\t\t<widget name="countrymenu" position="10,0" size="800,660" scrollbarMode="showOnDemand" />\n\t\t<ePixmap name="red" position="5,780" zPosition="4" size="540,40" pixmap="skin_default/buttons/red.png" transparent="1" alphatest="on" />\n\t\t<widget name="key_red" position="5,660" zPosition="5" size="120,60" valign="center" halign="center" font="Regular;28" transparent="1" foregroundColor="red" shadowColor="black" shadowOffset="-1,-1" />\n\t</screen>'
+
+	def __init__(self, session, xmlparse, selection):
+		Screen.__init__(self, session)
+		self.xmlparse = xmlparse
+		self.selection = selection
+		list = []
+		for plugins in self.xmlparse.getElementsByTagName('plugins'):
+			if str(plugins.getAttribute('cont').encode('utf8')) == self.selection:
+				for plugin in plugins.getElementsByTagName('plugin'):
+					list.append(plugin.getAttribute('name').encode('utf8'))
+			continue
+
+		list.sort()
+		self['countrymenu'] = MenuList(list)
+		self['actions'] = ActionMap(['SetupActions'], {'cancel': self.close,
+		'ok': self.selclicked}, -2)
+		self['key_red'] = Button(_('Back'))
+
+	def selclicked(self):
+		try:
+			selection_country = self['countrymenu'].getCurrent()
+		except:
+			return
+		for plugins in self.xmlparse.getElementsByTagName('plugins'):
+			if str(plugins.getAttribute('cont').encode('utf8')) == self.selection:
+				for plugin in plugins.getElementsByTagName('plugin'):
+					if plugin.getAttribute('name').encode('utf8') == selection_country:
+						urlserver = str(plugin.getElementsByTagName('url')[0].childNodes[0].data)
+						pluginname = plugin.getAttribute('name').encode('utf8')
+						self.prombt(urlserver, pluginname)
+						continue
+			continue
+
+	def prombt(self, com, dom):
+		self.com = com
+		self.dom = dom
+		if self.selection == '{ Skins }':
+			self.session.openWithCallback(self.callMyMsg, MessageBox, _('Do not install any skin unless you are sure it is compatible with your image.Are you sure?'), MessageBox.TYPE_YESNO)
+		else:
+			self.session.open(Console, _('Installing: %s') % dom, ['opkg install -force-overwrite %s' % com])
+
+	def callMyMsg(self, result):
+		if result:
+			dom = self.dom
+			com = self.com
+			self.session.open(Console, _('Installing: %s') % dom, ['ipkg install -force-overwrite %s' % com])
+            
 class Nab_DoStartCam(Screen):
 	skin = """
 	<screen position="390,100" size="484,250" title="Black Hole" flags="wfNoBorder">
@@ -268,16 +365,16 @@ class BhsysInfo(Screen):
 		text = _("BOX\n") + _("Brand:") + "\tMiraclebox\n"
 	
 		hwname = "Unknown"
-		if about.getHardwareTypeString() == "INI-8000SV":
+		if about.getHardwareTypeString() == "ini-8000sv":
 		    hwname = "MB Premium Ultra HD"
-		elif about.getHardwareTypeString() == "INI-5000SV":
+		elif about.getHardwareTypeString() == "ini-5000sv":
 		    hwname = "MB Premium Twin HD"
-		elif about.getHardwareTypeString() == "INI-2000SV":
+		elif about.getHardwareTypeString() == "ini-2000sv":
 		    hwname = "MB Premium Mini+ PLUS HD"
-		elif about.getHardwareTypeString() == "INI-1000SV":
+		elif about.getHardwareTypeString() == "ini-1000sv":
 		    hwname = "MB Premium Mini HD"
 
- 		text += _("Model:\t") + hwname
+ 		text += _("Model:\t") + hwname +"\n"
 		f = open("/proc/stb/info/chipset",'r')
  		text += _("Chipset:\t") + f.readline() +"\n"
  		f.close()
