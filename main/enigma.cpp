@@ -233,6 +233,7 @@ int main(int argc, char **argv)
 	dsk.setRedrawTask(main);
 	dsk_lcd.setRedrawTask(main);
 
+<<<<<<< HEAD
 	eDebug("Checking box...");
 	
 	FILE *infile;
@@ -275,6 +276,9 @@ int main(int argc, char **argv)
 		fclose(infile);
 	}
 	
+=======
+
+>>>>>>> c862121d8f3969179a69a01146aefc74bbe6fb07
 	eDebug("[MAIN] Loading spinners...");
 
 	{
