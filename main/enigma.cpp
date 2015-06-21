@@ -258,7 +258,11 @@ int main(int argc, char **argv)
 		else if(strcmp(line, "ini-8000sv\n") == 0) 
 		{
 			eDebug("Miraclebox Premium Ultra detected");
-		}  
+		}
+		if(strcmp(line, "7000S\n") == 0) 
+		{
+			eDebug("Miraclebox Premium Micro detected");
+		}
 		else
 		{
 			eDebug("Wrong HW, this image can be only run on Miraclbox Premium Series");
