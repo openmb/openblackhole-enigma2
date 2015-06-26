@@ -70,9 +70,6 @@ class DeliteBluePanel(Screen):
 			"down": self["Ecmtext"].pageDown
 		}, -1)
 		
-#		if not fileExists("/usr/lib/libcrypto.so.0.9.7"):
-#			system("ln -s /lib/libcrypto.so.0.9.8 /usr/lib/libcrypto.so.0.9.7")
-#			system("ln -s /lib/libcrypto.so.0.9.8 /lib/libcrypto.so.0.9.7")
 		self.emlist = []
 		self.populate_List()
 		self["list"] = MenuList(self.emlist)
@@ -237,8 +234,7 @@ class DeliteBluePanel(Screen):
 				self.close()
 		
 	def keyRed(self):
-		from Plugins.SystemPlugins.CrossEPG.crossepg_main import crossepg_main
-		crossepg_main.setup(self.session)
+		self.session.open(BhEpgPanel)
 
 	def myclose(self):
 		self.close()
@@ -423,6 +419,49 @@ class BhsysInfo(Screen):
 		self["lab1"].setText(text)
 		
 
+class BhEpgPanel(Screen):
+	skin = """
+	<screen position="center,center" size="600,400" title="Black Hole EPG Panel">
+		<widget source="list" render="Listbox" position="20,20" size="560,360" font="Regular;28" itemHeight="40"  scrollbarMode="showOnDemand" >
+			<convert type="StringList" />
+		</widget>
+	</screen>"""
+	
+	def __init__(self, session):
+		Screen.__init__(self, session)
+		
+		flist = [("EPGSettings"),("XMLTVImport"),("EPGImportFilter"),("CrossEPG"),("EPGSearch")]
+		self["list"] = List(flist)
+
+		self["actions"] = ActionMap(["WizardActions", "ColorActions"],
+		{
+			"ok": self.KeyOk,
+			"back": self.close
+
+		})
+
+
+	def KeyOk(self):
+		sel = self["list"].getCurrent()
+		if sel:
+			if sel == "CrossEPG":
+				from Plugins.SystemPlugins.CrossEPG.crossepg_main import crossepg_main
+				crossepg_main.setup(self.session)
+			elif sel == "EPGSettings":
+				from Screens.Setup import Setup
+				self.session.open(Setup, "epgsettings")
+			elif sel == "XMLTVImport":
+				from Plugins.Extensions.EPGImport.plugin import main as xmltv
+				xmltv(self.session)
+			elif sel == "EPGImportFilter":
+				from Plugins.Extensions.EPGImportFilter.plugin import main as epgimportfilter
+				epgimportfilter(self.session)
+			elif sel == "EPGSearch":
+				from Plugins.Extensions.EPGSearch.plugin import main as epgsearch
+				epgsearch(self.session)
+			
+			
+	
 
 
 class DeliteBp:

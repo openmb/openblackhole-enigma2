@@ -769,7 +769,7 @@ class DeliteOpenvpn(Screen):
 	def __init__(self, session):
 		Screen.__init__(self, session)
 		
-		self["lab1"] = Label(_("Vpn Version: "))
+		self["lab1"] = Label(_(""))
 		self["lab1a"] = Label(_("OpenVPN Panel - by Black Hole Team."))
 		self["lab2"] = Label(_("Startup Module:"))
 		self["labactive"] = Label(_("Inactive"))
@@ -798,25 +798,14 @@ class DeliteOpenvpn(Screen):
 		
 	def activateVpn(self):
 		
-		myline = 'AUTOSTART="all"'
 		mymess = _("OpenVpn Enabled. Autostart activated.")
 		if self.my_vpn_active == True:
-			myline = 'AUTOSTART="none"'
+			system("rm -f /etc/default/openvpn")
 			mymess = _("OpenVpn disabled.")
-			
-		if fileExists("/usr/bin/openvpn_script.sh"):
-			inme = open("/usr/bin/openvpn_script.sh",'r')
-			out = open("/usr/bin/openvpn_script.tmp",'w')
-			for line in inme.readlines():
-				if line.find('AUTOSTART="') != -1:
-					line = myline + '\n'
-				out.write(line)
+		else:
+			out = open("/etc/default/openvpn",'w')
+			out.write("AUTOSTART=all")
 			out.close()
-			inme.close()
-			
-		if fileExists("/usr/bin/openvpn_script.tmp"):
-			os_rename("/usr/bin/openvpn_script.tmp", "/usr/bin/openvpn_script.sh")
-			system("chmod 0755 /usr/bin/openvpn_script.sh")
 		
 		mybox = self.session.open(MessageBox, mymess, MessageBox.TYPE_INFO)
 		mybox.setTitle("Info")
@@ -828,17 +817,17 @@ class DeliteOpenvpn(Screen):
 			mybox = self.session.open(MessageBox, _("You have to Activate OpenVpn before to start"), MessageBox.TYPE_INFO)
 			mybox.setTitle("Info")
 		elif self.my_vpn_active == True and self.my_vpn_run == False:
-			rc = system("/usr/bin/openvpn_script.sh start")
+			rc = system("/etc/init.d/openvpn start")
 			rc = system("ps")
 			self.updateVpn()
 		elif self.my_vpn_active == True and self.my_vpn_run == True:
-			rc = system("/usr/bin/openvpn_script.sh restart")
+			rc = system("/etc/init.d/openvpn restart")
 			rc = system("ps")
 			self.updateVpn()
 			
 	def stopVpnstop(self):
 		if self.my_vpn_run == True:
-			rc = system("/usr/bin/openvpn_script.sh stop")
+			rc = system("/etc/init.d/openvpn stop")
 			rc = system("ps")
 			self.updateVpn()
 			
@@ -856,16 +845,10 @@ class DeliteOpenvpn(Screen):
 		self.my_vpn_run = False
 		
 		
-		if fileExists("/usr/bin/openvpn_script.sh"):
-			f = open("/usr/bin/openvpn_script.sh",'r')
- 			for line in f.readlines():
-				if line.find('AUTOSTART="all"') != -1:
-					self["labactive"].setText(_("Active/Autostart enabled"))
-					self["key_yellow"].setText(_("Deactivate"))
-					self.my_vpn_active = True
-								
-			f.close()
-				
+		if fileExists("/etc/default/openvpn"):
+			self["labactive"].setText(_("Active/Autostart enabled"))
+			self["key_yellow"].setText(_("Deactivate"))
+			self.my_vpn_active = True
 				
 		if fileExists("/tmp/nvpn.tmp"):
 			f = open("/tmp/nvpn.tmp",'r')
