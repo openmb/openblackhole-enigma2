@@ -259,6 +259,10 @@ int main(int argc, char **argv)
 		{
 			eDebug("Miraclebox Premium Ultra detected");
 		}
+		else if(strcmp(line, "g300\n") == 0) 
+		{
+			eDebug("Miraclebox Premium XXXXX detected");
+		}
 		else if(strcmp(line, "7000S\n") == 0) 
 		{
 			eDebug("Miraclebox Premium Micro detected");
