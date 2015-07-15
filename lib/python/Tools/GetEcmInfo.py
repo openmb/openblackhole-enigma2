@@ -127,7 +127,16 @@ class GetEcmInfo:
 								response = response.split(' ')
 								self.textvalue = "%s (%ss)" % (response[4], float(response[0])/1000)
 							else:
-								self.textvalue = ""
+								response = info.get('FROM', None)
+								if response:									
+									self.textvalue = ecm[0].replace(',','')
+									parts = self.textvalue.split()
+									info['caid'] = parts[1].strip()
+									info['pid'] = parts[3].strip()
+									info['provid'] = parts[5].strip()
+									self.textvalue = response
+								else:
+									self.textvalue = ""
 			decCI = info.get('caid', info.get('CAID', '0'))
 			provid = info.get('provid', info.get('prov', info.get('Provider', '0')))
 			ecmpid = info.get('pid', info.get('ECM PID', '0'))
