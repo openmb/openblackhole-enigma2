@@ -370,7 +370,9 @@ class BhsysInfo(Screen):
 		elif about.getHardwareTypeString() == "ini-1000sv":
 		    hwname = "MB Premium Mini HD"
 		elif about.getHardwareTypeString().startswith("7000"):
-		    hwname = "MB Premium Micro"
+		    hwname = "MB Premium Micro HD"
+		elif about.getHardwareTypeString().startswith("g300"):
+		    hwname = "MB Premium Twin+ HD"
  		text += _("Model:\t") + hwname +"\n"
 		f = open("/proc/stb/info/chipset",'r')
  		text += _("Chipset:\t") + f.readline() +"\n"

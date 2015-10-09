@@ -40,6 +40,9 @@ class About(Screen):
 		elif about.getHardwareTypeString().startswith("7000"):
 		    hwname = "MB Premium Micro"
 		    AboutText = _("Hardware: ") + hwname + "\n"
+		elif about.getHardwareTypeString().startswith("g300"):
+		    hwname = "MB Premium Twin+"
+		    AboutText = _("Hardware: ") + hwname + "\n"
 		else:
 		    AboutText = _("Hardware: ") + about.getHardwareTypeString() + "\n"
 		AboutText += _("CPU: ") + about.getCPUInfoString() + "\n"
@@ -211,18 +214,6 @@ class CommitInfo(Screen):
 			commitlog += 80 * '-' + '\n'
 			commitlog += urlbh.split('/')[-2].split('=')[-1] + '\n'
 			commitlog += 80 * '-' + '\n'
-		except:
-			response =  urlopen(url, timeout=5)
-			commitlog += 80 * '-' + '\n'
-			commitlog += url.split('/')[-2] + '\n'
-			commitlog += 80 * '-' + '\n'
-			for c in loads(urlopen(url, timeout=5).read()):
-				creator = c['commit']['author']['name']
-				title = c['commit']['message']
-				date = datetime.strptime(c['commit']['committer']['date'], '%Y-%m-%dT%H:%M:%SZ').strftime('%x %X')
-				commitlog += date + ' ' + creator + '\n' + title + 2 * '\n'
-			commitlog = commitlog.encode('utf-8')
-			self.cachedProjects[self.projects[self.project][1]] = commitlog
 		except:
 			commitlog += _("Currently the commit log cannot be retrieved - please try later again")
 		self["AboutScrollLabel"].setText(commitlog)
