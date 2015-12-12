@@ -183,7 +183,7 @@ RESULT eStaticServiceDVBBouquetInformation::getName(const eServiceReference &ref
 		return err;
 	}
 
-	eBouquet *bouquet=0;
+	eBouquet *bouquet = NULL;
 	if ((err = db->getBouquet(ref, bouquet)) != 0)
 	{
 		eDebug("[eStaticServiceDVBBouquetInformation] getName failed.. getBouquet failed!");
@@ -219,7 +219,7 @@ int eStaticServiceDVBBouquetInformation::isPlayable(const eServiceReference &ref
 			return 0;
 		}
 
-		eBouquet *bouquet=0;
+		eBouquet *bouquet = NULL;
 		if (db->getBouquet(ref, bouquet))
 		{
 			eDebug("[eStaticServiceDVBBouquetInformation] isPlayable failed.. getBouquet failed!");
@@ -1294,7 +1294,7 @@ void eDVBServicePlay::serviceEventTimeshift(int event)
 			if (m_skipmode < 0)
 				m_cue->seekTo(0, -1000);
 			ePtr<iTsSource> source = createTsSource(r);
-			m_service_handler_timeshift.tuneExt(r, 1, source, r.path.c_str(), m_cue, 0, m_dvb_service, false); /* use the decoder demux for everything */
+			m_service_handler_timeshift.tuneExt(r, source, r.path.c_str(), m_cue, 0, m_dvb_service, false); /* use the decoder demux for everything */
 
 			m_event((iPlayableService*)this, evUser+1);
 		}
@@ -1324,7 +1324,7 @@ void eDVBServicePlay::serviceEventTimeshift(int event)
 				resetTimeshift(1);
 
 				ePtr<iTsSource> source = createTsSource(r);
-				m_service_handler_timeshift.tuneExt(r, 1, source, m_timeshift_file_next.c_str(), m_cue, 0, m_dvb_service, eDVBServicePMTHandler::timeshift_playback, false); /* use the decoder demux for everything */
+				m_service_handler_timeshift.tuneExt(r, source, m_timeshift_file_next.c_str(), m_cue, 0, m_dvb_service, eDVBServicePMTHandler::timeshift_playback, false); /* use the decoder demux for everything */
 
 				m_event((iPlayableService*)this, evUser+1);
 			}
@@ -1356,6 +1356,11 @@ RESULT eDVBServicePlay::start()
 			packetsize = meta.m_packet_size;
 			scrambled = meta.m_scrambled;
 		}
+		else
+		{
+			/* when there is no meta file we need to handle ts/m2ts as descrambled */
+			scrambled = false;
+		}
 		m_cue = new eCueSheet();
 		type = eDVBServicePMTHandler::playback;
 	}
@@ -1380,7 +1385,7 @@ RESULT eDVBServicePlay::start()
 
 	m_first_program_info = 1;
 	ePtr<iTsSource> source = createTsSource(service, packetsize);
-	m_service_handler.tuneExt(service, m_is_pvr, source, service.path.c_str(), m_cue, false, m_dvb_service, type, scrambled);
+	m_service_handler.tuneExt(service, source, service.path.c_str(), m_cue, false, m_dvb_service, type, scrambled);
 
 	if (m_is_pvr)
 	{
@@ -1995,9 +2000,9 @@ std::string eDVBServicePlay::getInfoString(int w)
 	case sLiveStreamDemuxId:
 	{
 		eDVBServicePMTHandler &h = m_timeshift_active ? m_service_handler_timeshift : m_service_handler;
-		std::string demux;
-		demux += h.getDemuxID() + '0';
-		return demux;
+		std::stringstream demux;
+		demux << h.getDemuxID();
+		return demux.str();
 	}
 	default:
 		break;
@@ -2756,7 +2761,7 @@ void eDVBServicePlay::switchToTimeshift()
 	m_cue->seekTo(0, -1000);
 
 	ePtr<iTsSource> source = createTsSource(r);
-	m_service_handler_timeshift.tuneExt(r, 1, source, m_timeshift_file.c_str(), m_cue, 0, m_dvb_service, eDVBServicePMTHandler::timeshift_playback, false); /* use the decoder demux for everything */
+	m_service_handler_timeshift.tuneExt(r, source, m_timeshift_file.c_str(), m_cue, 0, m_dvb_service, eDVBServicePMTHandler::timeshift_playback, false); /* use the decoder demux for everything */
 
 	eDebug("[eDVBServicePlay] switchToTimeshift, in pause mode now.");
 	pause();

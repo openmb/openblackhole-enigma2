@@ -181,6 +181,7 @@ repzaprecclock.png \
 repzaprecclock_post.png \
 repzaprecclock_pre.png \
 repzaprecclock_prepost.png \
+stream.png \
 scan-c.png \
 scan-s.png \
 scan-t.png \

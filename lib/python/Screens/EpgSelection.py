@@ -36,6 +36,7 @@ class EPGSelection(Screen):
 
 	def __init__(self, session, service, zapFunc=None, eventid=None, bouquetChangeCB=None, serviceChangeCB=None):
 		Screen.__init__(self, session)
+		self.setTitle(_("EPG selection"))
 		self.bouquetChangeCB = bouquetChangeCB
 		self.serviceChangeCB = serviceChangeCB
 		self.ask_time = -1 #now
@@ -369,7 +370,7 @@ class EPGSelection(Screen):
 					if choice[1] == "delete":
 						self.removeTimer(timer)
 					elif choice[1] == "edit":
-						self.session.open(TimerEntry, timer)
+						self.session.openWithCallback(self.finishedEdit, TimerEntry, timer)
 					elif choice[1] == "disable":
 						self.disableTimer(timer, prev_state)
 					elif choice[1] == "timereditlist":
@@ -382,6 +383,22 @@ class EPGSelection(Screen):
 		else:
 			newEntry = RecordTimerEntry(serviceref, checkOldTimers = True, dirname = preferredTimerPath(), *parseEvent(event))
 			self.session.openWithCallback(self.finishedAdd, TimerEntry, newEntry)
+
+	def finishedEdit(self, answer=None):
+		if answer[0]:
+			entry = answer[1]
+			simulTimerList = self.session.nav.RecordTimer.record(entry)
+			if simulTimerList is not None:
+				for x in simulTimerList:
+					if x.setAutoincreaseEnd(entry):
+						self.session.nav.RecordTimer.timeChanged(x)
+				simulTimerList = self.session.nav.RecordTimer.record(entry)
+				if simulTimerList is not None:
+					self.session.openWithCallback(self.finishedEdit, TimerSanityConflict, simulTimerList)
+					return
+				else:
+					self.session.nav.RecordTimer.timeChanged(entry)
+		self.onSelectionChanged()
 
 	def finishedAdd(self, answer):
 		print "finished add"

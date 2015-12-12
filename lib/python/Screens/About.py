@@ -22,6 +22,7 @@ import skin
 class About(Screen):
 	def __init__(self, session):
 		Screen.__init__(self, session)
+		self.setTitle(_("About"))
 		hddsplit, = skin.parameters.get("AboutHddSplit", (0,))
 
 		hwname = ""
