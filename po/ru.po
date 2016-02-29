@@ -18,7 +18,7 @@ msgid ""
 "Advanced options and settings."
 msgstr ""
 "\n"
-"Дополнительные параметры и настройки."
+"Дополнительные опции и настройки."
 
 msgid ""
 "\n"
@@ -60,7 +60,7 @@ msgid ""
 "Press OK on your remote control to continue."
 msgstr ""
 "\n"
-"Нажмите ОК на вашем пульте Д/У для продолжения."
+"Нажмите ОК на Вашем пульте Д/У для продолжения."
 
 msgid ""
 "\n"
@@ -95,7 +95,7 @@ msgid ""
 "Scan for local extensions and install them."
 msgstr ""
 "\n"
-"Сканирование и установка локальных дополнений."
+"Сканирование для локальных дополнений и установка их."
 
 msgid ""
 "\n"
@@ -119,7 +119,7 @@ msgid ""
 "View, install and remove available or installed packages."
 msgstr ""
 "\n"
-"Просмотр, установка, удаление доступных или установленных пакетов."
+"Просмотр, установка и удаление доступных или установленных пакетов."
 
 #, python-format
 msgid " (Channel %s)"
@@ -444,6 +444,15 @@ msgstr "9"
 
 msgid ": %s"
 msgstr ": %s"
+
+msgid "5 minutes"
+msgstr "5 минут"
+
+msgid "30 minutes"
+msgstr "30 минут"
+
+msgid "60 minutes"
+msgstr "60 минут"
 
 msgid "<Current movielist location>"
 msgstr "<Текущее место списка видео>"
@@ -1063,7 +1072,7 @@ msgid "By default, SNR will be shown in dB (when supported by the tuner). This s
 msgstr "По умолчанию, SNR показывается в дБ (если поддерживает тюнер). При включении параметра SNR будет показываться в процентах."
 
 msgid "C"
-msgstr "С"
+msgstr "C"
 
 msgid "C-Band"
 msgstr "C-диапазон LNB"
@@ -2696,7 +2705,7 @@ msgid "Function of OK button"
 msgstr "Функция кнопки OK"
 
 msgid "Further Options"
-msgstr "Дальнейшие опции"
+msgstr "Дополнительные опции"
 
 msgid ""
 "GUI needs a restart to apply a new skin\n"
@@ -3306,10 +3315,10 @@ msgstr[1] "Список версии %d, найдено %d канала"
 msgstr[2] "Список версии %d, найдено %d каналов"
 
 msgid "Listen to the radio..."
-msgstr "Слушать радио..."
+msgstr "Прослушивание радио..."
 
 msgid "Lists reloaded!"
-msgstr "Списки перезагружены!"
+msgstr "Список перезагружен!"
 
 msgid "Lithuanian"
 msgstr "Литовский"
@@ -3321,7 +3330,7 @@ msgid "Load length of movies in movie list"
 msgstr "Загружать длительность видео в списке видео"
 
 msgid "Load playlist"
-msgstr "загрузить плейлист"
+msgstr "Загрузить плейлист"
 
 msgid "Load unlinked userbouquets"
 msgstr "Загрузка отделенных пользовательских букетов"
@@ -3333,7 +3342,7 @@ msgid "Location"
 msgstr "Расположение"
 
 msgid "Location for instant recordings"
-msgstr "Расположение моментальных записей"
+msgstr "Расположение немедленные записей"
 
 msgid "Lock ratio"
 msgstr "Качество захвата"
@@ -4249,6 +4258,25 @@ msgstr "Пожалуйста, настройте тюнер C"
 msgid "Please set up tuner D"
 msgstr "Пожалуйста, настройте тюнер D"
 
+msgid "Please set up tuner E"
+msgstr "Пожалуйста, настройте тюнер E"
+
+msgid "Please set up tuner F"
+msgstr "Пожалуйста, настройте тюнер F"
+
+msgid "Please set up tuner G"
+msgstr "Пожалуйста, настройте тюнер G"
+
+msgid "Please set up tuner H"
+msgstr "Пожалуйста, настройте тюнер H"
+
+msgid "Please set up tuner I"
+msgstr "Пожалуйста, настройте тюнер I"
+
+msgid "Please set up tuner J"
+msgstr "Пожалуйста, настройте тюнер J"
+
+
 msgid ""
 "Please use direction keys to move the PiP window.\n"
 "Press Bouquet +/- to resize the window.\n"
@@ -4674,7 +4702,7 @@ msgid "Reload"
 msgstr "Обновить"
 
 msgid "Reload blacklists"
-msgstr "Обновить черные списки"
+msgstr "Обновить черный список"
 
 msgid "Reloading bouquets and services..."
 msgstr "Обновление букетов и сервисов..."
@@ -4795,10 +4823,10 @@ msgid "Restart"
 msgstr "Перезагрузка"
 
 msgid "Restart GUI now?"
-msgstr "Рестарт GUI сейчас?"
+msgstr "Рестарт GUI..."
 
 msgid "Restart enigma"
-msgstr "Рестарт энигма"
+msgstr "Рестарт GUI"
 
 msgid "Restart network"
 msgstr "Рестарт сети"
@@ -5087,7 +5115,7 @@ msgid "Seek forward (enter time)"
 msgstr "Перемотать вперед (введите время)"
 
 msgid "Select"
-msgstr "Выбрать"
+msgstr "Выбор"
 
 msgid "Select CAId"
 msgstr "Выбор CAId"
@@ -9478,14 +9506,8 @@ msgstr "FP обновление"
 msgid "System Message Check"
 msgstr "Проверка системных сообщений"
 
-msgid "HDMI CEC setup"
-msgstr "Настройки HDMI CEC"
-
 msgid "Select your Skin"
 msgstr "Выбор Вашего скина"
-
-msgid "Restart GUI"
-msgstr "Рестарт GUI"
 
 msgid "DVD Burn"
 msgstr "Запись на DVD"
@@ -9510,3 +9532,103 @@ msgstr "Конфигурация сети"
 
 msgid "Service Info"
 msgstr "Информация о сервисе"
+
+msgid "Further options"
+msgstr "Дополнительные опции"
+
+msgid "Similar EPG"
+msgstr "Аналогичное EPG"
+
+msgid "Event view context menu"
+msgstr "Контекстное меню просмотра события"
+
+msgid "Extensions menu"
+msgstr "Меню дополнений"
+
+msgid "Events info menu"
+msgstr "Меню информации событий"
+
+msgid "Set default settings?"
+msgstr "Установить настройки по дефолту?"
+
+msgid "Always include ECM in recordings"
+msgstr "Всегда включать ECM в записи"
+
+msgid "Never decrypt the content while recording. This overrides the individual timer settings globally. If enabled, recordings are stored in crypted presentation and must be decrypted afterwards (sometimes called offline decoding). Default: off."
+msgstr "Никогда не декодировать контент во время записи. Это отменяет индивидуальную настройку таймера на глобальном уровне. Если включено, контент не будет декодирован во время записи и Вам надо будет выполнить отложенное декодирование позже. По умолчанию: выкл."
+
+msgid "Always include ECM messages in recordings. This overrides the individual timer settings globally. It allows recordings to be always decrypted afterwards (sometimes called offline decoding), if supported by your receiver. Default: off."
+msgstr "Всегда включать сообщения ECM в записи. Это отменяет индивидуальную настройку таймера на глобальном уровне и позволяет отложенно декодировать записи в нужное Вам время позже, если эта функция поддерживается Вашим ресивером. По умолчанию: выкл."
+
+msgid "Never decrypt while recording"
+msgstr "Никогда не декодировать во время записи"
+
+msgid "All services provider"
+msgstr "Все сервисы провайдера"
+
+msgid "CI slot: "
+msgstr "Слот CI: "
+
+msgid "execute cuts (requires MovieCut plugin)"
+msgstr "выполнить сокращения (необходим плагин MovieCut)"
+
+msgid "enable intro screen"
+msgstr "включить окно помощи"
+
+msgid "disable intro screen"
+msgstr "выключить окно помощи"
+
+msgid "service is in bouquet parental protection"
+msgstr "сервис находится в букете родительского контроля"
+
+msgid "Streaming clients info"
+msgstr "Информация о клиентах стриминга"
+
+msgid "Transcoding: "
+msgstr "Транскодирование: "
+
+msgid "Total clients streaming: %d (%s)"
+msgstr "Всего клиентов стриминга: %d (%s)"
+
+msgid ": 0000 - default (disabled)"
+msgstr ": 0000 - по умолчанию (отключено)"
+
+msgid "Enable fallback remote receiver for recordings"
+msgstr "Включить запасной удаленный ресивер для записей"
+
+msgid "Enable remote enigma2 receiver to be tried to tune into services that cannot be tuned into locally for recordings (e.g. tuner is occupied or service type is unavailable on the local tuner. Specify complete URL including http:// and port number (normally ...:8001), e.g. http://second_box:8001."
+msgstr "Разрешить удаленный ресивер на enigma2, который попытается запустить стрим этого сервиса, если локальный тюнер занят для записи.Укажите полный URL, включая http:// и номер порта (обычно ...:8001), пример: http://айпи_удаленного_ресивера:8001."
+
+msgid "FBC Unicable"
+msgstr "FBC технология (Unicable)"
+
+msgid "FBC automatic loop through"
+msgstr "FBC - автоматический петлевой вход"
+
+msgid ""
+"FBC automatic loop through\n"
+"inactive"
+msgstr ""
+"FBC - автоматический петлевой вход\n"
+"неактивен"
+
+msgid ""
+"FBC automatic loop through\n"
+"linked to %s"
+msgstr ""
+"FBC - автоматический петлевой вход\n"
+"подключен к %s"
+
+msgid "Set PIN"
+msgstr "Установить PIN-код"
+
+msgid "You PIN code is 0000. This is the default PIN code and it disable parental control!\n"
+msgstr "Ваш PIN-код сейчас 0000. Это код по умолчанию и отключение родительского контроля!\n"
+
+msgid "Zgemma H.S/H.2S/H.2H"
+msgstr "Zgemma H.S/H.2S/H.2H"
+
+msgid "No stream clients"
+msgstr "Нет клиентов стрима"
+
+ 

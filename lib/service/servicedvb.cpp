@@ -2291,7 +2291,7 @@ ePyObject eDVBServicePlay::getRassInteractiveMask()
 	Py_RETURN_NONE;
 }
 
-bool eDVBServiceBase::tryFallbackTuner(eServiceReferenceDVB &service, bool &is_stream, bool is_pvr, bool simulate)
+bool eDVBServiceBase::tryFallbackTuner(eServiceReferenceDVB &service, bool &is_stream, bool is_pvr, bool simulate, bool is_recording)
 {
 	ePtr<eDVBResourceManager> res_mgr;
 	std::ostringstream remote_service_ref;
@@ -2299,7 +2299,8 @@ bool eDVBServiceBase::tryFallbackTuner(eServiceReferenceDVB &service, bool &is_s
 	int system;
 	size_t index;
 
-	bool remote_fallback_enabled = eConfigManager::getConfigBoolValue("config.usage.remote_fallback_enabled", false);
+	bool remote_fallback_enabled = is_recording ? eConfigManager::getConfigBoolValue("config.usage.remote_fallback_recording_enabled", false) :
+		eConfigManager::getConfigBoolValue("config.usage.remote_fallback_enabled", false);
 	std::string remote_fallback_url = eConfigManager::getConfigValue("config.usage.remote_fallback");
 
 	if(is_stream || is_pvr || simulate ||
@@ -2880,10 +2881,14 @@ void eDVBServicePlay::updateDecoder(bool sendSeekableStateChanged)
 
 		selectAudioStream();
 
+#if HAVE_AMLOGIC
+		m_decoder->setSyncPCR(pcrpid);
+#else
 		if (!(m_is_pvr || m_is_stream || m_timeshift_active))
 			m_decoder->setSyncPCR(pcrpid);
 		else
 			m_decoder->setSyncPCR(-1);
+#endif
 
 		if (m_decoder_index == 0)
 		{

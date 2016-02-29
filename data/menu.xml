@@ -13,7 +13,6 @@
 	<code> .. code .. </code>
 		"exec"s code
 -->
-		
 		<menu level="0" text="Setup" flushConfigOnClose="1" entryID="setup_selection" >
 			<id val="setup"/>
 			<menu weight="7" level="0" text="Service searching" entryID="service_searching_selection">
@@ -78,6 +77,7 @@ self.session.openWithCallback(msgClosed, FactoryReset)
 			<id val="information"/>
 			<item level="1" text="Service" entryID="service_info_screen"><screen module="ServiceInfo" screen="ServiceInfo"/></item>
 			<item level="0" text="About" entryID="about_screen"><screen module="About"/></item>
+			<item level="2" text="Streaming clients info" entryID="streaming_clients_info_screen"><screen module="StreamingClientsInfo"/></item>
 		</menu>
 		<menu text="Black Hole Shutdown" entryID="standby_restart_list">
 			<id val="shutdown" />

@@ -36,7 +36,6 @@ class EPGSelection(Screen):
 
 	def __init__(self, session, service, zapFunc=None, eventid=None, bouquetChangeCB=None, serviceChangeCB=None):
 		Screen.__init__(self, session)
-		self.setTitle(_("EPG selection"))
 		self.bouquetChangeCB = bouquetChangeCB
 		self.serviceChangeCB = serviceChangeCB
 		self.ask_time = -1 #now
@@ -48,6 +47,7 @@ class EPGSelection(Screen):
 		self.session = session
 		if isinstance(service, str) and eventid != None:
 			self.type = EPG_TYPE_SIMILAR
+			self.setTitle(_("Similar EPG"))
 			self["key_yellow"] = Button()
 			self["key_blue"] = Button()
 			self["key_red"] = Button()
@@ -55,6 +55,7 @@ class EPGSelection(Screen):
 			self.eventid = eventid
 			self.zapFunc = None
 		elif isinstance(service, eServiceReference) or isinstance(service, str):
+			self.setTitle(_("Single EPG"))
 			self.type = EPG_TYPE_SINGLE
 			self["key_yellow"] = Button()
 			self["key_blue"] = Button(_("Select Channel"))
@@ -63,6 +64,7 @@ class EPGSelection(Screen):
 			self.sort_type = 0
 			self.setSortDescription()
 		else:
+			self.setTitle(_("Multi EPG"))
 			self.skinName = "EPGSelectionMulti"
 			self.type = EPG_TYPE_MULTI
 			self["key_yellow"] = Button(pgettext("button label, 'previous screen'", "Prev"))
@@ -145,7 +147,7 @@ class EPGSelection(Screen):
 			def boxAction(choice):
 				if choice:
 					choice[1]()
-			self.session.openWithCallback(boxAction, ChoiceBox, title=text, list=menu)
+			self.session.openWithCallback(boxAction, ChoiceBox, title=text, list=menu, windowTitle=_("Further options"))
 
 	def runPlugin(self, plugin):
 		event = self["list"].getCurrent()
@@ -196,10 +198,9 @@ class EPGSelection(Screen):
 		elif self.type == EPG_TYPE_SINGLE:
 			service = self.currentService
 			self["Service"].newService(service.ref)
-			if self.saved_title is None:
+			if not self.saved_title:
 				self.saved_title = self.instance.getTitle()
-			title = self.saved_title + ' - ' + service.getServiceName()
-			self.instance.setTitle(title)
+			self.setTitle(self.saved_title + ' - ' + service.getServiceName())
 			l.fillSingleEPG(service)
 		else:
 			l.fillSimilarList(self.currentService, self.eventid)
@@ -306,7 +307,7 @@ class EPGSelection(Screen):
 	def runningEventCallback(self, t, state, result):
 		if result is not None and t.state == state:
 			findNextRunningEvent = True
-			findEventNext = False 
+			findEventNext = False
 			if result[1] == "nextonlystop":
 				findEventNext = True
 				t.disable()
@@ -352,7 +353,7 @@ class EPGSelection(Screen):
 			prev_state = timer.state
 			isRunning = prev_state in (1, 2)
 			title_text = isRepeat and _("Attention, this is repeated timer!\n") or ""
-			firstNextRepeatEvent = isRepeat and (begin < timer.begin <= end or timer.begin <= begin <= timer.end) and not timer.justplay 
+			firstNextRepeatEvent = isRepeat and (begin < timer.begin <= end or timer.begin <= begin <= timer.end) and not timer.justplay
 			menu = [(_("Delete timer"), "delete"),(_("Edit timer"), "edit")]
 			buttons = ["red", "green"]
 			if not isRunning:
