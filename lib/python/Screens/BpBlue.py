@@ -198,7 +198,7 @@ class DeliteBluePanel(Screen):
 	
 	def downloadxmlpage(self):
 		from twisted.web.client import getPage
-		url = 'http://vuplus-images.co.uk/panel/addonslist.xml'
+		url = 'http://panel.vuplus-images.co.uk/addonslist1.5.xml'
 		getPage(url).addCallback(self._gotPageLoad).addErrback(self.errorLoad)
 
 	def errorLoad(self, error):
