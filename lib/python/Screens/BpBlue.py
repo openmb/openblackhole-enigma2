@@ -127,7 +127,7 @@ class DeliteBluePanel(Screen):
 					self.defaultcam = parts[1]
 			f.close()
 			
-		self.defCamname =  "Common Interface"	
+		self.defCamname =  "Common Interface"
 		for c in self.camnames.keys():
 			if self.camnames[c] == self.defaultcam:
 				self.defCamname = c
@@ -198,7 +198,7 @@ class DeliteBluePanel(Screen):
 	
 	def downloadxmlpage(self):
 		from twisted.web.client import getPage
-		url = 'http://panel.vuplus-images.co.uk/addonslist1.5.xml'
+		url = 'http://panel.vuplus-images.co.uk/addonslist1.6.xml'
 		getPage(url).addCallback(self._gotPageLoad).addErrback(self.errorLoad)
 
 	def errorLoad(self, error):
