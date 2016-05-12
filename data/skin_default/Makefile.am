@@ -107,7 +107,6 @@ nim_active.png \
 ninactive.png \
 no_coverArt.png \
 now_arrow.png \
-overscan.png \
 pal.png \
 p_bar.png \
 picon_bg.png \
