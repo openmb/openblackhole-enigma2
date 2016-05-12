@@ -10,6 +10,10 @@
 
 #include <deque>
 #include <fstream>
+#include <ios>
+#include <sstream>
+#include <iomanip>
+#include <string>
 #include <time.h>
 #include <unistd.h>  // for usleep
 #include <sys/vfs.h> // for statfs
@@ -394,6 +398,31 @@ eEPGCache::eEPGCache()
 	while (onid_file >> std::hex >>tmp_onid)
 	         onid_blacklist.insert(onid_blacklist.end(),1,tmp_onid);
 	onid_file.close();
+
+	std::ifstream pid_file ("/etc/enigma2/epgpids.custom");
+	if (pid_file.is_open())
+	{
+		eDebug("[eEPGCache] Custom pidfile found, parsing...");
+		std::string line;
+		char optsidonid[12];
+		int op, tsid, onid, eitpid;
+		while (!pid_file.eof())
+		{
+			getline(pid_file, line);
+			if (line[0] == '#' || sscanf(line.c_str(), "%i %i %i %i", &op, &tsid, &onid, &eitpid) != 4)
+				continue;
+			if (op < 0)
+				op += 3600;
+			if (eitpid != 0)
+			{
+				sprintf (optsidonid, "%x%04x%04x", op, tsid, onid);
+				customeitpids[std::string(optsidonid)] = eitpid;
+				eDebug("[eEPGCache] %s --> %#x", optsidonid, eitpid);
+			}
+		}
+		pid_file.close();
+		eDebug("[eEPGCache] Done");
+	}
 
 	ePtr<eDVBResourceManager> res_mgr;
 	eDVBResourceManager::getInstance(res_mgr);
@@ -1574,6 +1603,20 @@ void eEPGCache::channel_data::startEPG()
 	mask.pid = 0x12;
 	mask.flags = eDVBSectionFilterMask::rfCRC;
 
+	eDVBChannelID chid = channel->getChannelID();
+	std::ostringstream epg_id;
+	epg_id << std::hex << std::setfill('0') <<
+		std::setw(0) << ((chid.dvbnamespace.get() & 0xffff0000) >> 16) <<
+		std::setw(4) << chid.transport_stream_id.get() <<
+		std::setw(4) << chid.original_network_id.get();
+
+	std::map<std::string,int>::iterator it = cache->customeitpids.find(epg_id.str());
+	if (it != cache->customeitpids.end())
+	{
+		mask.pid = it->second;
+		eDebug("[eEPGCache] Using non-standard pid %#x", mask.pid);
+	}
+	
 	if (eEPGCache::getInstance()->getEpgSources() & eEPGCache::NOWNEXT)
 	{
 		mask.data[0] = 0x4E;
